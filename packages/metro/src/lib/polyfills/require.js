@@ -313,6 +313,8 @@ function loadModuleImplementation(
   moduleId: ModuleID,
   module: ?ModuleDefinition,
 ): Exports {
+  Systrace.beginEvent('JS_require_' + (module.verboseName || moduleId));
+
   if (!module && moduleDefinersBySegmentID.length > 0) {
     const {segmentId, localId} = unpackModuleId(moduleId);
     const definer = moduleDefinersBySegmentID[segmentId];
@@ -358,7 +360,7 @@ function loadModuleImplementation(
   try {
     if (__DEV__) {
       // $FlowFixMe: we know that __DEV__ is const and `Systrace` exists
-      Systrace.beginEvent('JS_require_' + (module.verboseName || moduleId));
+      // Systrace.beginEvent('JS_require_' + (module.verboseName || moduleId));
     }
 
     const moduleObject: Module = module.publicModule;
@@ -426,6 +428,8 @@ function loadModuleImplementation(
       global.$RefreshSig$ = prevRefreshSig;
     }
   }
+
+  Systrace.endEvent('JS_require_' + (module.verboseName || moduleId));
 }
 
 function unknownModuleError(id: ModuleID): Error {
