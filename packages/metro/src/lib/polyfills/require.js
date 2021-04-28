@@ -403,12 +403,14 @@ function loadModuleImplementation(
 
     if (__DEV__) {
       // $FlowFixMe: we know that __DEV__ is const and `Systrace` exists
-      Systrace.endEvent();
+      // Systrace.endEvent();
 
       if (Refresh != null) {
         registerExportsForReactRefresh(Refresh, moduleObject.exports, moduleId);
       }
     }
+
+    Systrace.endEvent('JS_require_' + (module.verboseName || moduleId));
 
     return moduleObject.exports;
   } catch (e) {
@@ -428,8 +430,6 @@ function loadModuleImplementation(
       global.$RefreshSig$ = prevRefreshSig;
     }
   }
-
-  Systrace.endEvent('JS_require_' + (module.verboseName || moduleId));
 }
 
 function unknownModuleError(id: ModuleID): Error {
@@ -452,11 +452,16 @@ function moduleThrewError(id: ModuleID, error: any): Error {
   );
 }
 
+metroRequire.Systrace = {
+  beginEvent: (string): void => {},
+  endEvent: (string): void => {},
+};
+
 if (__DEV__) {
-  metroRequire.Systrace = {
-    beginEvent: (): void => {},
-    endEvent: (): void => {},
-  };
+  // metroRequire.Systrace = {
+  //   beginEvent: (string): void => {},
+  //   endEvent: (string): void => {},
+  // };
 
   metroRequire.getModules = (): ModuleList => {
     return modules;
