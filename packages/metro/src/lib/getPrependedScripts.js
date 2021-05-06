@@ -42,6 +42,8 @@ async function getPrependedScripts(
     type: 'script',
   };
 
+  console.info('defaults.moduleSystem', defaults.moduleSystem);
+
   const graph = await deltaBundler.buildGraph(
     [defaults.moduleSystem, ...polyfillModuleNames],
     {

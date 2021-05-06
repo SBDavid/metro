@@ -60,7 +60,9 @@
     "test-ci": "yarn run typecheck && yarn run lint && yarn run build && yarn run jest-coverage -i && node scripts/mapCoverage.js && codecov",
     "test": "yarn run typecheck && yarn run lint && yarn run build && yarn run jest",
     "typecheck": "flow check",
-    "watch": "yarn run build && node ./scripts/watch.js"
+    "watch": "yarn run build && node ./scripts/watch.js",
+    "prepare-release": "lerna run prepare-release",
+    "cleanup-release": "lerna run cleanup-release"
   },
   "workspaces": [
     "packages/*"
